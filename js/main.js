@@ -1,3 +1,6 @@
 import { createPhotos } from './data.js';
+import { renderPictures } from './miniature.js';
+
 const photos = createPhotos();
-console.log(photos);
+renderPictures(photos);
+// console.log(photos);
