@@ -64,7 +64,7 @@ const renderComments = (comments) => {
   commentsListElement.innerHTML = '';
   const commentsFragment = document.createDocumentFragment();
 
-  comments.forEach(comment => {
+  comments.forEach((comment) => {
     const commentElement = createCommentElement(comment);
     commentsFragment.append(commentElement);
   });
