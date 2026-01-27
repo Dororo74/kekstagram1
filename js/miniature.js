@@ -35,3 +35,4 @@ picturesContainer.addEventListener('click', (evt)=>{
   const photo = photos.find((item) => item.id === photoId);
   showBigPicture(photo);
 });
+
