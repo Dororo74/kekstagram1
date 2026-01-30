@@ -1,5 +1,3 @@
-import Pristine from '../vendor/pristine/pristine.min.js';
-
 const body = document.body;
 const uploadInput = document.querySelector('.img-upload__input');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -11,21 +9,27 @@ const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAGS = 5;
 const HASHTAG_REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const getHashtags = () =>
-  hashtagsInput.value
+function getHashtags() {
+  return hashtagsInput.value
     .trim()
     .toLowerCase()
     .split(/\s+/)
     .filter(Boolean);
+}
 
+function onEscKeydown(evt) {
+  if (evt.key === 'Escape') {
+    closeForm();
+  }
+}
 
-const openForm = () => {
+export function openForm() {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onEscKeydown);
-};
+}
 
-const closeForm = () => {
+export function closeForm() {
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
 
@@ -33,16 +37,14 @@ const closeForm = () => {
   uploadInput.value = '';
 
   document.removeEventListener('keydown', onEscKeydown);
-};
+}
 
-const onEscKeydown = (evt) => {
-  if (evt.key === 'Escape') {
-    closeForm();
-  }
-};
-
-hashtagsInput.addEventListener('keydown', (evt) => evt.stopPropagation());
-commentInput.addEventListener('keydown', (evt) => evt.stopPropagation());
+hashtagsInput.addEventListener('keydown', (evt) => {
+  evt.stopPropagation();
+});
+commentInput.addEventListener('keydown', (evt) => {
+  evt.stopPropagation();
+});
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -50,20 +52,22 @@ const pristine = new Pristine(form, {
   errorTextClass: 'pristine-error',
 });
 
-const validateHashtagFormat = () =>
-  getHashtags().every((tag) => HASHTAG_REGEXP.test(tag));
+function validateHashtagFormat() {
+  return getHashtags().every((tag) => HASHTAG_REGEXP.test(tag));
+}
 
-const validateHashtagCount = () =>
-  getHashtags().length <= MAX_HASHTAGS;
+function validateHashtagCount() {
+  return getHashtags().length <= MAX_HASHTAGS;
+}
 
-const validateHashtagUnique = () => {
+function validateHashtagUnique() {
   const tags = getHashtags();
   return tags.length === new Set(tags).size;
-};
+}
 
-const validateComment = (value) =>
-  value.length <= MAX_COMMENT_LENGTH;
-
+function validateComment(value) {
+  return value.length <= MAX_COMMENT_LENGTH;
+}
 
 pristine.addValidator(
   hashtagsInput,
@@ -93,7 +97,6 @@ uploadInput.addEventListener('change', openForm);
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-
   if (pristine.validate()) {
     form.submit();
   }
